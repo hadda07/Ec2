@@ -1,0 +1,35 @@
+---
+ - name:  provisioning EC2 instances using Ansible
+   hosts: localhost
+   connection: local
+   gather_facts: False
+   tags: provisioning
+
+   vars:
+     keypair: deep-boto3
+     instance_type: t2.small
+     image: ami-082af980f9f5514f8
+     wait: yes
+     group: webserver
+     count: 1
+     region: eu-west-1
+     security_group: hadda
+     proto: tcp
+     from_port: 22
+     to_port: 22
+     cidr_ip: 0.0.0.0/0
+   
+   tasks:
+
+     - name: Task # 1 - Create my security group
+       local_action:
+         module: ec2_group
+         name: "{{ security_group }}"
+         description: Security Group for webserver Servers
+         region: "{{ region }}"
+         rules:
+            - proto: "{{ proto }}"
+              from_port: "{{ from_port }}"
+              to_port: "{{ to_port }}"
+              cidr_ip: "{{ cidr_ip }}"
+       register: basic_firewall
