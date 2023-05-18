@@ -17,8 +17,8 @@ instances = EC2_RESOURCE.create_instances(
     ImageId=AMI_ID,
     InstanceType='t2.micro',
     KeyName=KEY_PAIR_NAME,
-    #SecurityGroupIds = [SECURITY_GROUP_ID],
-    SubnetId=SUBNET_ID,
+    SecurityGroupIds = [SECURITY_GROUP_ID],
+    #SubnetId=SUBNET_ID,
     UserData=USER_DATA,
     TagSpecifications=[
         {
@@ -38,9 +38,9 @@ for instance in instances:
     
     instance.wait_until_running()
     
-    EC2_CLIENT.associate_iam_instance_profile(
-        IamInstanceProfile = {'Name': INSTANCE_PROFILE},
-        InstanceId = instance.id,
-    )
+    #EC2_CLIENT.associate_iam_instance_profile(
+     #   IamInstanceProfile = {'Name': INSTANCE_PROFILE},
+      #  InstanceId = instance.id,
+    #)
     print(f'EC2 Instance Profile "{INSTANCE_PROFILE}" has been attached')
     print(f'EC2 instance "{instance.id}" has been started')
